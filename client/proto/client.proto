@@ -1,0 +1,143 @@
+// When pushed from the client all event has the following fields:
+// device_id(aka uuid), event_id, event_time
+
+syntax = "proto3";
+
+package openschema.schema.client;
+
+
+//Wifi Usage Metrics
+message WifiUsageHourly {
+  int64 value = 1;
+  string date = 2;
+}
+
+message WifiUsageDaily {
+  int64 value = 1;
+  string date = 2;
+}
+
+//Cellular Usage Metrics
+message CellularUsageHourly {
+  int64 value = 1;
+  string date = 2;
+}
+
+message CellularUsageDaily {
+  int64 value = 1;
+  string date = 2;
+}
+
+// WiFi QoS Metrics
+message WifiRssi {
+  string ssid = 1;
+  int32 rssi = 2
+  int64 timestamp = 3;
+}
+
+message WifiLatency {
+  string ssid = 1;
+  int32 latency = 2
+  int64 timestamp = 3;
+}
+
+message WifiJitter {
+  string ssid = 1;
+  int32 jitter = 2
+  int64 timestamp = 3;
+}
+
+message WifiBandwidth {
+  string ssid = 1;
+  int32 bandwidth = 2
+  int64 timestamp = 3;
+}
+
+message WifiPacketLoss { // measured packet loss in %
+  string ssid = 1;
+  int32 packetloss = 2
+  int64 timestamp = 3;
+}
+
+message WifiEvent {
+  string ssid = 1;
+  bool connected = 2;
+  int64 timestamp = 3;
+  string security = 4;
+}
+
+// Cellular QoS Metrics
+message CellularSignalStrength { //TODO: breakdown to different technologies
+  string net = 1;
+  int32 rssi = 2
+  int64 timestamp = 3;
+}
+
+message CellularLatency {
+  string net = 1;
+  int32 latency = 2
+  int64 timestamp = 3;
+}
+
+message CellularJitter {
+  string net = 1;
+  int32 jitter = 2
+  int64 timestamp = 3;
+}
+
+message CellularBandwidth {
+  string net = 1;
+  int32 BandWidth = 2
+  int64 timestamp = 3;
+}
+
+message CellularPacketLoss { // measured packet loss in %
+  string net = 1;
+  int32 packetloss = 2
+  int64 timestamp = 3;
+}
+
+message CellularPlan {
+  string net = 1;
+  int32 size = 2; // monthly plan size in GB
+}
+
+// Device events
+enum DeviceEventType {
+  cpu = 0;
+  mem = 1;
+  battery = 2;
+}
+
+message DeviceEvent {
+  DeviceEventType type = 1;
+  int32 value = 2;
+}
+
+// Device Specifications
+message Device {
+  string model = 1;
+  string os = 2;
+  string model = 3;
+}
+
+// User Behavior
+message ScreenEvent { // screen on and off duration
+  bool status = 1;
+  int32 duration = 2;
+  int64 timestamp = 3;
+}
+
+//Location
+message DeviceLocation {
+  double long = 1;
+  double lat = 2;
+  int64 timestamp = 3;
+}
+
+//App Usage
+message AppUsageDaily {
+  string appid = 1;
+  int64 value = 2;
+  string date = 3;
+}
