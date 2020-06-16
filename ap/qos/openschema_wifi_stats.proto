@@ -1,0 +1,71 @@
+// Copyright (c) 2015, Plume Design Inc. All rights reserved.
+// 
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//    1. Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//    2. Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//    3. Neither the name of the Plume Design Inc. nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+// 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL Plume Design Inc. BE LIABLE FOR ANY
+// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+package sts;
+
+
+enum RadioBandType {
+    BAND2G                                  = 0;
+    BAND5G                                  = 1;
+    BAND5GL                                 = 2;
+    BAND5GU                                 = 3;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Client report: Report contains connection status, rx and tx stats for a single station
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+message Client {
+    message Stats {
+        optional uint64     txMegaBytes        = 1;
+        optional uint64     rxMegaBytes        = 2;
+        optional uint64     txPhyRate       = 3;
+        optional uint64     rxPhyRate       = 4;
+        optional uint64     txPRR      = 5;
+        optional uint64     rxPRR      = 6;
+        optional uint64     channelUtilization       = 7;
+        required uint32     SNR       = 8;
+        optional double     Interference         = 9;
+        optional double     currentUsage         = 10;
+        required uint64     potentialThroughput            = 11;
+        optional uint32     usageBasedScore        = 12;
+        optional uint32	    needBasedScore        = 13;
+        optional uint32	    isBusy        = 14;
+        optional uint32     hops_to_gw        = 15;
+    }
+
+    required string     client_id         = 1;
+    required string     parent_id       = 2;
+    required RadioBandType    band        = 3;
+    required uint64     timestamp_ms        = 4;
+    required uint32     channel        = 5;
+    optional bool       connected           = 6;
+    optional uint32     duration_ms         = 7;
+    optional uint32	    connects        = 8;
+    optional uint32	    rapid_connects        = 9;
+    optional uint32	    repeat_connects     = 10;
+    optional string     category        = 11;
+    
+}

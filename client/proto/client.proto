@@ -1,10 +1,21 @@
-// When pushed from the client all event has the following fields:
-// device_id(aka uuid), event_id, event_time
+// Copyright (c) 2020-present, Shoelace Wireless, Inc.
+// All rights reserved.
+//
+// This source code is licensed under the BSD-style license found in the
+// LICENSE file in the root directory of this source tree.
 
 syntax = "proto3";
 
 package openschema.schema.client;
 
+
+enum WiFiStandard {
+  legacy = 1;
+  11n = 2;
+  11ac = 3;
+  11ax = 4;
+  others = 5
+}
 
 //Wifi Usage Metrics
 message WifiUsageHourly {
@@ -47,7 +58,13 @@ message WifiJitter {
   int64 timestamp = 3;
 }
 
-message WifiBandwidth {
+message WifiBandwidthUp {
+  string ssid = 1;
+  int32 bandwidth = 2
+  int64 timestamp = 3;
+}
+
+message WifiBandwidthDown {
   string ssid = 1;
   int32 bandwidth = 2
   int64 timestamp = 3;
@@ -61,9 +78,32 @@ message WifiPacketLoss { // measured packet loss in %
 
 message WifiEvent {
   string ssid = 1;
-  bool connected = 2;
-  int64 timestamp = 3;
-  string security = 4;
+  string bssid = 2;
+  bool connected = 3;
+  int64 timestamp = 4;
+  string security = 5;
+  int32 freq = 6;
+  int32 linkspeed = 7;
+  WiFiStandard standard = 8;
+  string ipv4 = 9;
+  string ipv6 = 10;
+  string public_ipv4 = 11;
+  string public_ipv6 = 12;
+  bool hidden = 13;
+}
+
+message WifiAp {
+  string ssid = 1;
+  string bssid = 2;
+  int32 rssi = 3;
+  string operator = 4;
+  string venue = 5;
+  WiFiStandard standard = 6;
+}
+
+message WifiScanResult {
+  string timestamp = 1;
+  repeat WifiAp = 2;
 }
 
 // Cellular QoS Metrics
@@ -85,7 +125,13 @@ message CellularJitter {
   int64 timestamp = 3;
 }
 
-message CellularBandwidth {
+message CellularBandwidthUp {
+  string net = 1;
+  int32 BandWidth = 2
+  int64 timestamp = 3;
+}
+
+message CellularBandwidthDown {
   string net = 1;
   int32 BandWidth = 2
   int64 timestamp = 3;
@@ -140,4 +186,26 @@ message AppUsageDaily {
   string appid = 1;
   int64 value = 2;
   string date = 3;
+}
+
+enum HetNetMode {
+  eco = 1;
+  smart = 2;
+  dual = 3;
+  wifiplus = 4;
+  abc = 5;
+}
+
+message HetNet {
+  HetNetMode mode = 1;
+  int64 starttime = 2;
+  int64 endtime = 3
+  HetNetMode pre_mode = 4;
+  HetNetMode new_mode = 5;
+  int32 wifi_offload = 6;
+  int32 spped_boosts = 7;
+  int32 seamless_transition = 8;
+  int32 wifi_efficiency = 9;
+  repeat string dns_server = 10;
+  bool enc = 11;
 }
