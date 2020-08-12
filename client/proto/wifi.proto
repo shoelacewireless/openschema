@@ -1,0 +1,59 @@
+// Copyright (c) 2020-present, Shoelace Wireless, Inc.
+// All rights reserved.
+//
+// This source code is licensed under the BSD-style license found in the
+// LICENSE file in the root directory of this source tree.
+
+syntax = "proto3";
+
+package openschema.schema.wifi;
+
+
+message WifiEvent {
+  NetEventType 		type = 	1;
+  string 			ssid = 2;
+  string 			bssid = 3;
+  bool 				connected = 4;
+  int64 			timestamp = 5;
+  string 			security = 6;
+  int32 			freq = 7;
+  int32 			linkspeed = 8;
+  WiFiStandard 		standard = 9;
+  string 			ipv4 = 10;
+  string 			ipv6 = 11;
+  string 			public_ipv4 = 12;
+  string 			public_ipv6 = 13;
+  bool 				hidden = 14;
+  int32 			rssi = 15
+  Qos 				qos = 16;
+  Usage 			usage = 17;
+  bool 				captive = 18;
+  string 			fqdn = 19;
+  repeated String 	capability = 20;
+  int32 			maxrx = 21;
+  int32 			maxtx = 22;
+}
+
+message WifiScanResult {
+  string 			timestamp = 1;
+  repeat 			WifiAp = 2;
+}
+
+message WifiAp {
+  string 			ssid = 1;
+  string 			bssid = 2;
+  int32 			rssi = 3;
+  string 			operator = 4;
+  string 			venue = 5;
+  WiFiStandard 		standard = 6;
+}
+
+enum WiFiStandard {
+  legacy = 1;
+  11n = 2;
+  11ac = 3;
+  11ax = 4;
+  others = 5
+}
+
+

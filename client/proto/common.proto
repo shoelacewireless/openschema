@@ -1,0 +1,31 @@
+// Copyright (c) 2020-present, Shoelace Wireless, Inc.
+// All rights reserved.
+//
+// This source code is licensed under the BSD-style license found in the
+// LICENSE file in the root directory of this source tree.
+
+syntax = "proto3";
+
+package openschema.schema.common;
+
+message Qos {
+	up_bw
+	down_bw
+	latency
+	jitter
+	packetloss	
+}
+
+message Usage {
+	sent
+	recieved
+	start
+	end
+}
+
+enum NetEventType {
+	conneted = 0;
+	disconneted = 1;
+	update = 2
+}
+

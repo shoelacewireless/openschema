@@ -1,0 +1,50 @@
+// Copyright (c) 2020-present, Shoelace Wireless, Inc.
+// All rights reserved.
+//
+// This source code is licensed under the BSD-style license found in the
+// LICENSE file in the root directory of this source tree.
+
+syntax = "proto3";
+
+package openschema.schema.device;
+
+
+// Device events
+enum DeviceEventType {
+  cpu = 0;
+  mem = 1;
+  battery = 2;
+}
+
+message DeviceEvent {
+  DeviceEventType type = 1;
+  int32 value = 2;
+}
+
+// Device Specifications
+message Device {
+  string model = 1;
+  string os = 2;
+  string model = 3;
+}
+
+// User Behavior
+message ScreenEvent { // screen on and off duration
+  bool status = 1;
+  int32 duration = 2;
+  int64 timestamp = 3;
+}
+
+//Location
+message DeviceLocation {
+  double long = 1;
+  double lat = 2;
+  int64 timestamp = 3;
+}
+
+//App Usage
+message AppUsageDaily {
+  string appid = 1;
+  int64 value = 2;
+  string date = 3;
+}

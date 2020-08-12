@@ -1,0 +1,151 @@
+// Copyright (c) 2020-present, Shoelace Wireless, Inc.
+// All rights reserved.
+//
+// This source code is licensed under the BSD-style license found in the
+// LICENSE file in the root directory of this source tree.
+
+syntax = "proto3";
+
+package openschema.schema.cellular;
+import openschema.schema.common;
+
+message CellEvent {
+	NetEventType event = 1;
+	String operator = 2;
+	oneof mode {
+		CDMA cdma = 3;
+		WCDMA wcdma = 4;
+		LTE lte = 5;
+		GSM gsm = 6;
+		NR nr = 7;
+		TDSCDMA tdscdma = 8;
+	}
+	Usage usage = 9;
+	Qos qos = 10;
+	String ipv4 = 11;
+	String ipv6 = 12;
+	APN apn = 13;
+	String dns1 = 14;
+	String dns2 = 15;
+	repeated String capability = 16;
+	CellMode cellmode = 17;
+}
+
+
+message CDMA {
+	int32 basestationid = 1;
+	double lat = 2;
+	double long = 3
+	int32 netid = 4
+	int32 asu = 5;
+	int32 dbm = 6;
+	int32 level = 7;
+}
+
+message WCDMA {
+	int32 cellid = 1; 
+	CSG csg = 2;
+	int32 lac = 3;
+	int32 mcc = 4;
+	int32 mnc = 5;
+	int32 psc = 6;
+	int32 uarfcn = 7;
+	int32 asu = 8;
+	int32 dbm = 9;
+	int32 ecno = 10;
+	int32 level = 11;
+}
+
+message LTE {
+	int32 band = 1; 
+	int32 ci = 2; 
+	CSG csg = 3;
+	int32 earfcn = 4;
+	int32 mcc = 5;
+	int32 mnc = 6;
+	int32 pci = 7;
+	int32 tac = 8;
+	int32 asu = 9;
+	int32 cqi = 10;
+	int32 dbm = 11;
+	int32 level = 12;
+	int32 rsrp = 13;
+	int32 rsrq = 14;
+	int32 rssi = 15;
+	int32 rssnr = 16;
+	int32 timingadvance = 17;
+}
+
+message NR {
+	int32 bands = 1;
+	int32 mcc = 2;
+	int32 mnc = 3;
+	int32 nci = 4;
+	int32 nrarfcn = 5;
+	int32 pci = 6;
+	int32 tac = 7;
+	int32 asu = 8;
+	int32 csirsrp = 9;
+	int32 csirsrq = 10;
+	int32 csisinr = 11;
+	int32 dbm = 12;
+	int32 level = 13;
+	int32 ssrsrp = 14;
+	int32 ssrsrq = 15;
+	int32 sssinr = 16;
+}
+
+message GSM {
+	int32 plmn = 1;
+	int32 arfcn = 2;
+	int32 bsic = 3;
+	int32 cid = 4;
+	int32 lac = 5;
+	int32 mcc = 6;
+	int32 mnc = 7;
+	int32 asu = 8;
+	int32 biterrorrate = 9;
+	int32 dbm = 10;
+	int32 level = 11;
+	int32 rssi = 12;
+	int32 timingadvance = 13;
+}
+
+message TDSCDMA {
+	int32 cid = 1;
+	int32 CSG csg = 2;
+	int32 cpid = 3;
+	int32 lac = 4;
+	int32 mcc = 5;
+	int32 mnc = 6;
+	int32 uarfcn = 7;
+	int32 asulevel = 8;
+	int32 dbm = 9;
+	int32 level = 10;
+	int32 rscp = 11
+}
+
+enum CellMode {
+	gsm 			= 0;
+	cdma 			= 1;
+	lte 			= 2;
+	nr 				= 3;
+	tdscdma 		= 4;
+	wcdma 			= 5;
+}
+
+message APN {
+	String name = 1;
+	int32 type = 2;
+	int32 auth = 3;
+	int32 carrierid; 
+}
+
+message CSG {
+	int32 id = 1;
+	bool indicator = 2;
+	string homenode = 3; 
+}
+
+// TODO: 
+// add neighbour data
