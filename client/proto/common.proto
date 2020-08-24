@@ -9,18 +9,20 @@ syntax = "proto3";
 package openschema.schema.common;
 
 message Qos {
-	up_bw
-	down_bw
-	latency
-	jitter
-	packetloss	
+	int64 up_bw = 1;        //bandwidth(Mbps)
+	int64 down_bw = 2;
+	int32 latency = 3;      //millisec
+	int32 jitter = 4;
+	int32 packetloss = 5;   //percentage
+	int64 up_packet = 6;    //packet count
+	int64 down_packet = 7;
 }
 
 message Usage {
-	sent
-	recieved
-	start
-	end
+	int64 sent = 1;					//MBs sent
+	int64 recieved = 2;			//MBs recieved
+	int64 start = 3;        //timestamp start
+	int64 end = 4;					//timestamp end
 }
 
 enum NetEventType {
@@ -28,4 +30,3 @@ enum NetEventType {
 	disconneted = 1;
 	update = 2
 }
-
