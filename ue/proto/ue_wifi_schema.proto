@@ -1,0 +1,171 @@
+/*
+Copyright 2020 The Magma Authors.
+
+This source code is licensed under the BSD-style license found in the
+LICENSE file in the root directory of this source tree.
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+syntax = "proto3";
+
+package openschema.schema.wifi;
+
+/**
+ * UE WiFi schema represent a collection of metrics collected by UE related to active or available WiFi connections.
+ * WiFi Schema is organized based on the network protocol stack.
+ *
+ */
+message WiFiSchema {
+
+  /**
+   * Physical layer characteristics of WiFi from UE point of view.
+   */
+  message WiFiPHYSchema {
+    int32 max_rx = 1;  // Maximum physical recieve bandwidth.
+    int32 max_tx = 2;  // Maximu physical send bandwidth.
+    int32 freq = 3; // Frquency related to the current wifi status. Also representing the channel used.
+    int32 linkspeed = 4; // Current physical link speed.
+    int32 ceter_freq_0 = 5; // Center frequency.
+    int32 ceter_freq_1 = 6; // Center frequency.
+    /**
+     * Channel Width characteristics of WiFi.
+     */
+    enum WifiChannelWidth {
+      channel_width_20 = 0;
+      channel_width_40 = 1;
+      channel_width_80 = 2;
+      channel_width_80_plus = 3;
+      channel_width_160 = 4;
+    }
+    WifiChannelWidth channel_width = 7; //WiFi channel width of the current WiFi connection.
+    /**
+     * WiFi standard.
+     */
+    enum WiFiStandard {
+      standard_legacy = 0;
+      standard_11n = 1;
+      standard_11ac = 2;
+      standard_11ax = 3;
+      others = 4;
+    }
+    WiFiStandard wifi_standard = 8; // Standard of the current WiFi connection.
+  }
+
+  /**
+   * MAC layer characteristics of WiFi from UE point of view.
+   */
+  message WiFiMACSchema {
+    string ssid = 1;  // SSID of the WiFi access point related to current status.
+    string bssid = 2; // BSSID of the WiFi access point related to current status.
+    bool ssid_hidden = 3; // Indicated if the current ssid is hidden or not.
+    string soft_ssid = 4; // SSID of the UE, if UE is functioning as AP(aka personal hotspot or tethering)
+    string soft_bssid = 5;  // BSSID of the UE, if UE is functioning as AP(aka personal hotspot or tethering)
+  }
+
+  /**
+   * IP layer characteristics of WiFi from UE point of view.
+   */
+  message WiFiIPSchema {
+    string ipv4 = 1; // IPv4 address assigned to WiFi interface.
+    string ipv6 = 2; // IPv6 address assigned to WiFi interface.
+    string public_ipv4 = 3; // Public IPv4 address of current WiFi connection.
+    string public_ipv6 = 4; // Public IPv6 address of current WiFi connection.
+  }
+
+  /**
+   * Application layer characteristics of WiFi from UE point of view.
+   */
+  message WiFiAPPSchema {
+    string dns4 = 1; // list of IPv4 DNS Server
+    string dns6 = 2; // List of IPv6 DNS Server
+    bool captive = 3; // Is a captive portal present on this AP.
+    bool easyconnect = 4; // Is this an EasyConnect WiFi connection: https://www.wi-fi.org/discover-wi-fi/wi-fi-easy-connect.
+    string fqdn = 5; // What is the FQDN of the passpoint configuration.
+    bool passpoint = 6; // Specify if current WiFi connection is passpoint.
+  }
+
+  /**
+   * Security and Encryption characteristics of WiFi from UE point of view.
+   */
+  message WiFiSecuritySchema {
+    enum WiFiSecurity {
+      security_open = 0;
+      security_wpa2psk = 1;
+      security_wpa3_sae = 2;
+      security_wpa3_sae_transition = 3;
+    }
+    WiFiSecurity security = 1; // What is the security and Encryption technology used in the current WiFi connection.
+  }
+
+  /**
+   * QoS and QoE characteristics of WiFi actively measured by UE. UE should measure these metrics periodically and based on different triggers.
+   * Often a speed test is used to measure active metrics.
+   *
+   */
+  message WiFiActiveQoSSchema {
+    int64 active_up_bw = 1; // Actively measured upload speed of the current connection(KBps).
+  	int64 active_down_bw = 2; // Actively measured download speed of the current connection(KBps).
+  	int32 active_latency = 3; //Actively measured latency of the current connection. Also known as RTT(millisec).
+  	int32 active_jitter = 4; //Actively measured jiter of the current connection.
+  	int32 active_packetloss = 5; //Actively measured packet loss of the current connection(percentage).
+    int32 active_rssi = 6;  // Recieved signal strength of the current wifi status.
+  }
+
+  /**
+   * QoS and QoE characteristics of WiFi passively measured by UE. UE should measure these metrics periodically and based on different triggers.
+   *
+   */
+  message WiFiPassiveQoSSchema {
+    int64 passive_up_bw = 1; // Passively measured upload speed of the current connection(KBps).
+  	int64 passive_down_bw = 2; // Passively measured download speed of the current connection(KBps).
+  	int32 passive_latency = 3; //Passively measured latency of the current connection. Also known as RTT(millisec).
+  	int32 passive_jitter = 4; //Passively measured jiter of the current connection.
+  	int32 passive_packetloss = 5; //Passively measured packet loss of the current connection(percentage).
+    int32 passive_rssi = 6; // Recieved signal strength of the current wifi status.
+  }
+
+  /**
+   * UE WiFi usage associated to a specific WiFi session.
+   */
+  message WiFiUsageSchema {
+  	int64 sent_bytes = 1; // Number of bytes sent.
+  	int64 recieved_bytes = 2; // Number of bytes recieved.
+    int64 sent_packet = 3; // Number of packets(TCP and UDP) sent.
+  	int64 recieved_packet = 4; // Number of packets(TCP and UDP) recieved.
+    int64 session_start = 5; // Start time of the current WiFi session. WiFi session can be refered to as MDO session too.
+    int64 session_end = 6; // End Time of the current WiFi/MDO session.
+  }
+
+  /**
+   * Current status of UE WiFi connection.
+   */
+  enum WiFiConnectionStatusSchema {
+    wifi_ap_connected = 0;
+    wifi_ap_disconnected = 1;
+    wifi_ap_connection_updated = 2;
+    wifi_local_hotspot = 3;
+    wifi_direct = 4;
+    wifi_aware = 5;
+  }
+  WiFiConnectionStatusSchema connection_status = 1; // Current Status of WiFi Connection. Whether UE is connected to an AP, functioning as hotspot or there is a P2P connection.
+
+  /**
+   * Result of WiFi scanning perfomed by UE.
+   */
+  message WifiScanResultSchema {
+    message WifiAp {
+      string ssid = 1;
+      string bssid = 2;
+      int32 rssi = 3;
+      string operator_name = 4;
+      string venue_name = 5;
+      WiFiSchema.WiFiPHYSchema.WiFiStandard standard = 6;
+    }
+    repeated WifiAp scanned_ap = 1; // Report from UE's background scanning for WiFi networks.
+  }
+}
